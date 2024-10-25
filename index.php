@@ -46,36 +46,30 @@
         </form>
 
         <?php
-        require 'connect.php'; // Bao gồm file kết nối cơ sở dữ liệu
+        require 'connect.php';
 
         if (isset($_POST['submit'])) {
             if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
-                // Đường dẫn file tạm
                 $fileTmpPath = $_FILES['file']['tmp_name'];
                 $fileType = $_FILES['file']['type'];
-
-                // Kiểm tra định dạng file
+                
                 if ($fileType == 'text/plain') {
                     $successCount = 0;
                     $failureCount = 0;
 
-                    // Mở file và đọc từng dòng
                     $file = fopen($fileTmpPath, "r");
 
                     while (($line = fgets($file)) !== false) {
-                        // Tách dòng thành các giá trị dựa trên dấu phẩy
                         $data = str_getcsv($line);
                         if (count($data) == 3) {
-                            $title = $conn->real_escape_string(trim($data[0])); // Trim để loại bỏ khoảng trắng
-                            $description = $conn->real_escape_string(trim($data[1])); // Trim để loại bỏ khoảng trắng
-                            $imageUrl = $conn->real_escape_string(trim($data[2])); // Trim để loại bỏ khoảng trắng
+                            $title = $conn->real_escape_string(trim($data[0]));
+                            $description = $conn->real_escape_string(trim($data[1]));
+                            $imageUrl = $conn->real_escape_string(trim($data[2]));
 
-                            // Kiểm tra xem tiêu đề đã tồn tại chưa
                             $checkQuery = "SELECT * FROM course WHERE Title = '$title'";
                             $checkResult = $conn->query($checkQuery);
 
                             if ($checkResult->num_rows == 0) {
-                                // Chèn dữ liệu vào database nếu chưa tồn tại
                                 $insertQuery = "INSERT INTO course (Title, Description, imageUrl) VALUES ('$title', '$description', '$imageUrl')";
                                 if ($conn->query($insertQuery)) {
                                     $successCount++;
@@ -89,7 +83,6 @@
                     }
                     fclose($file);
 
-                    // Thông báo số bản ghi thành công và thất bại
                     echo '<div class="alert alert-info mt-2" role="alert">';
                     echo "$successCount bản ghi được thêm thành công, $failureCount bản ghi thất bại.";
                     echo '</div>';
@@ -105,7 +98,6 @@
         <hr>
 
         <?php
-        // Hiển thị dữ liệu từ database
         $query = "SELECT * FROM course";
         $result = $conn->query($query);
 
