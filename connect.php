@@ -1,9 +1,8 @@
 <?php
-// Thông tin kết nối đến cơ sở dữ liệu
-$server = "localhost"; // Địa chỉ máy chủ cơ sở dữ liệu
-$database = "db_dao_thu_huong"; // Tên cơ sở dữ liệu
-$username = "root"; // Tên đăng nhập cơ sở dữ liệu
-$password = ""; // Mật khẩu (nếu có)
+$server = "localhost";
+$database = "db_dao_thu_huong";
+$username = "root";
+$password = "";
 
 // Kết nối đến cơ sở dữ liệu
 $conn = new mysqli($server, $username, $password, $database);
